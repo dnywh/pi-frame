@@ -1,8 +1,6 @@
 # Pi Press
 
-A starter-kit for printing your own newspaper using a Raspberry Pi and e-ink display.
-
-This has been tested with a Raspberry Pi Zero W and Waveshare e-Paper HAT.
+A starter-kit for printing your own newspaper using a Raspberry Pi and e-ink display. Tested on a Raspberry Pi Zero W and Waveshare e-Paper HAT.
 
 ## Apps
 
@@ -15,8 +13,9 @@ Name | Description
 |[Hello World](TODO) | Just prints 'Hello World' in a basic font.
 |[Year Progress](TODO)| Show's how far through the year we are.
 
+### Elsewhere
 
-Check out these other apps I've made for Pi Press. Both of these require internet connection plus some various API keys.
+These apps are the reason Pi Press exists: I wanted an easy way to switch between them at various parts of the day or week. They each require an internet connection plus various API key setup.
 
 Name | Description
 |---|---|
