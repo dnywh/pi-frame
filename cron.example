@@ -1,0 +1,19 @@
+# Run the app-launcher on Pi startup
+@reboot sh /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog 2>&1
+
+# Run the app-launcher once every thirtieth minute from 8pm through 11pm UTC
+# Log the result to the cronlog
+*/30 20-23 * * * /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+
+# And again from 12am through 9am UTC (because cron doesn't like overnight ranges)
+*/30 00-09 * * * /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+
+# Run the sleep-launcher once at 10am
+0 10 * * * /home/pi/where-iss/src/sleep-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+
+# Templates
+# Every hour between certain hours would start like this:
+# 0 00-10 * * * /home/pi...
+
+# Every thirtieth minute between certain hours would start like this:
+# */30 20-23 * * * /home/pi...
