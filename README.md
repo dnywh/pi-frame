@@ -1,4 +1,4 @@
-# Pi Press
+# Pi Frame
 
 A starter-kit for printing your own newspaper using a Raspberry Pi and e-ink display. Tested on a Raspberry Pi Zero W and Waveshare e-Paper HAT.
 
@@ -6,7 +6,7 @@ A starter-kit for printing your own newspaper using a Raspberry Pi and e-ink dis
 
 ### Included
 
-Pi Press comes with two basic apps to get started. Neither of these require any authentication or setup beyond package installation.
+Pi Frame comes with two basic apps to get started. Neither of these require any authentication or setup beyond package installation.
 
 | Name                  | Description                               |
 | --------------------- | ----------------------------------------- |
@@ -15,7 +15,7 @@ Pi Press comes with two basic apps to get started. Neither of these require any 
 
 ### Elsewhere
 
-These apps are the reason Pi Press exists: I wanted an easy way to switch between apps at various parts of the day or week. They each require an internet connection plus various API key setup.
+These apps are the reason Pi Frame exists: I wanted an easy way to switch between apps at various parts of the day or week. They each require an internet connection plus various API key setup.
 
 | Name                                             | Description                                                                                                                                                                                  |
 | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -25,7 +25,7 @@ These apps are the reason Pi Press exists: I wanted an easy way to switch betwee
 
 ### Ideas
 
-These are external projects that I think could be nice for Pi Press.
+These are external projects that I think could be nice for Pi Frame.
 
 | Name                                             | Description                                                                                                 |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
