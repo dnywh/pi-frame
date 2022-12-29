@@ -13,7 +13,7 @@ if os.path.exists(libDir):
 
 from waveshare_epd import (
     epd7in5_V2,
-)  # Change to whatever Waveshare model you have, or add your own display's drivers to /lib
+)  # Change to whatever Waveshare model you have, or add a different display's driver to /lib
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)

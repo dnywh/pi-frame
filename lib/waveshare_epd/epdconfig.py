@@ -6,7 +6,7 @@
 # *----------------
 # * | This version:   V1.2
 # * | Date        :   2022-10-29
-# * | Info        :
+# * | Info        :   
 # ******************************************************************************
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documnetation files (the "Software"), to deal
@@ -37,9 +37,9 @@ logger = logging.getLogger(__name__)
 
 class RaspberryPi:
     # Pin definition
-    RST_PIN = 17
-    DC_PIN = 25
-    CS_PIN = 8
+    RST_PIN  = 17
+    DC_PIN   = 25
+    CS_PIN   = 8
     BUSY_PIN = 24
 
     def __init__(self):
@@ -79,9 +79,10 @@ class RaspberryPi:
         return 0
 
     def module_exit(self):
-        logger.debug("e-Paper: Closing SPI and 5V GPIO")
+        logger.debug("spi end")
         self.SPI.close()
 
+        logger.debug("close 5V, Module enters 0 power consumption ...")
         self.GPIO.output(self.RST_PIN, 0)
         self.GPIO.output(self.DC_PIN, 0)
 
@@ -90,30 +91,28 @@ class RaspberryPi:
 
 class JetsonNano:
     # Pin definition
-    RST_PIN = 17
-    DC_PIN = 25
-    CS_PIN = 8
+    RST_PIN  = 17
+    DC_PIN   = 25
+    CS_PIN   = 8
     BUSY_PIN = 24
 
     def __init__(self):
         import ctypes
-
         find_dirs = [
             os.path.dirname(os.path.realpath(__file__)),
-            "/usr/local/lib",
-            "/usr/lib",
+            '/usr/local/lib',
+            '/usr/lib',
         ]
         self.SPI = None
         for find_dir in find_dirs:
-            so_filename = os.path.join(find_dir, "sysfs_software_spi.so")
+            so_filename = os.path.join(find_dir, 'sysfs_software_spi.so')
             if os.path.exists(so_filename):
                 self.SPI = ctypes.cdll.LoadLibrary(so_filename)
                 break
         if self.SPI is None:
-            raise RuntimeError("Cannot find sysfs_software_spi.so")
+            raise RuntimeError('Cannot find sysfs_software_spi.so')
 
         import Jetson.GPIO
-
         self.GPIO = Jetson.GPIO
 
     def digital_write(self, pin, value):
@@ -155,11 +154,11 @@ class JetsonNano:
 
 class SunriseX3:
     # Pin definition
-    RST_PIN = 17
-    DC_PIN = 25
-    CS_PIN = 8
+    RST_PIN  = 17
+    DC_PIN   = 25
+    CS_PIN   = 8
     BUSY_PIN = 24
-    Flag = 0
+    Flag     = 0
 
     def __init__(self):
         import spidev
@@ -215,14 +214,14 @@ class SunriseX3:
         self.GPIO.cleanup([self.RST_PIN, self.DC_PIN, self.CS_PIN, self.BUSY_PIN])
 
 
-if os.path.exists("/sys/bus/platform/drivers/gpiomem-bcm2835"):
+if os.path.exists('/sys/bus/platform/drivers/gpiomem-bcm2835'):
     implementation = RaspberryPi()
-elif os.path.exists("/sys/bus/platform/drivers/gpio-x3"):
+elif os.path.exists('/sys/bus/platform/drivers/gpio-x3'):
     implementation = SunriseX3()
 else:
     implementation = JetsonNano()
 
-for func in [x for x in dir(implementation) if not x.startswith("_")]:
+for func in [x for x in dir(implementation) if not x.startswith('_')]:
     setattr(sys.modules[__name__], func, getattr(implementation, func))
 
 ### END OF FILE ###
