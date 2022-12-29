@@ -1,15 +1,20 @@
-# Run the app-launcher on Pi startup
-@reboot sh /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog 2>&1
-
-# Run the app-launcher once every thirtieth minute from 8pm through 11pm UTC
+# Run launcher A on startup
 # Log the result to the cronlog
-*/30 20-23 * * * /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+@reboot sh /home/pi/date-stamp/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# And again from 12am through 9am UTC (because cron doesn't like overnight ranges)
-*/30 00-09 * * * /home/pi/where-iss/src/app-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+# Run launcher B one time every day at 7:30pm UTC
+30 19 * * * /home/pi/surf-dot/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# Run the sleep-launcher once at 10am
-0 10 * * * /home/pi/where-iss/src/sleep-launcher.sh >/home/pi/logs/cronlog.log 2>&1
+# Run launcher C thirtieth minute from from 10pm to 9am UTC
+# Split at midnight because cron doesn't like overnight ranges
+*/30 22-23 * * * /home/pi/where-iss/launcher.sh >/home/pi/logs/cronlog.log 2>&1
+*/30 00-09 * * * /home/pi/where-iss/launcher.sh >/home/pi/logs/cronlog.log 2>&1
+
+# Run launcher A one time every day at 9:30am UTC
+30 09 * * * /home/pi/date-stamp/launcher.sh >/home/pi/logs/cronlog.log 2>&1
+
+# Run launcher D once at 11:30am UTC
+30 11 * * * /home/pi/eraser/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
 # Templates
 # Every hour between certain hours would start like this:

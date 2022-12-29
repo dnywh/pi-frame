@@ -68,7 +68,6 @@ try:
         fill=1,
     )
     canvas = canvas.rotate(angle)
-    # canvas.show()
 
     # Render all of the above to the display
     epd.display(epd.getbuffer(canvas))
