@@ -26,16 +26,16 @@ from waveshare_epd import (
 )
 
 
-# Design stuff
-margin = 36
-desiredHeight = 360 - 36
-cellGap = 9
+# Design parameters
+margin = 24
+desiredHeight = 360 - margin
+cellGap = 6
 bufferX = 4
 bufferY = 14
 
 
 def crossedOffCell(x, y, img):
-    # Drop in a Sharpie-like scratch image
+    # Drop in a Sharpie-like scribble image
     canvas.paste(img, (int(x - (imageExcess / 2)), int(y - (imageExcess / 2))))
     # Draw outline for surrounding rectangle
     draw.line([(x, y), (x + cellSize, y)], fill="black", width=1)
@@ -49,12 +49,10 @@ try:
     logging.info(f"Kicking off at {timeStampNice}")
     # Calculate current day of year and amount of days in current year
     thisYear = datetime.today().year
-    # thisYear = 2024  # TODO remove, debugging
     firstDayOfYear = datetime(thisYear, 1, 1)
     lastDayOfYear = datetime(thisYear, 12, 31)
     currentDayOfYear = datetime.now().timetuple().tm_yday
     totalDaysThisYear = (lastDayOfYear - firstDayOfYear).days + 1
-    currentDayOfYear = 281  # TODO remove, debugging
     daysPassed = currentDayOfYear - 1
     logging.info(f"Crossing off {daysPassed} days of {totalDaysThisYear}")
 
@@ -65,7 +63,7 @@ try:
     excessRows = math.trunc(((cols * rows - totalDaysThisYear) / rows))
     maxCellSize = int(desiredHeight / cols)
     cellSize = maxCellSize - cellGap
-    imageExcess = int(cellGap / 2)
+    imageExcess = int(cellSize * 0.25)
 
     # Prepare images
     amountOfAssets = len(
@@ -78,7 +76,7 @@ try:
 
     possibleImg = []
     for i in range(amountOfAssets):
-        img = Image.open(os.path.join(assetsDir, f"scratch-{i + 1:02d}.png")).resize(
+        img = Image.open(os.path.join(assetsDir, f"scribble-{i + 1:02d}.gif")).resize(
             (cellSize + imageExcess, cellSize + imageExcess)
         )
         possibleImg.append(img)
@@ -88,13 +86,10 @@ try:
     epd.init()
     epd.Clear()
 
-    canvas = Image.new(
-        "1", (epd.width, epd.height), "white"
-    )  # TODO replicate clear color naming in other apps, too (instead of 0, 1, 255)
+    canvas = Image.new("1", (epd.width, epd.height), "white")
     draw = ImageDraw.Draw(canvas)
 
     # Center grid
-    # Slightly inaccurate from cell outline width
     offsetX = (
         bufferX + int((epd.width - (cols * (cellSize + cellGap))) / 2) + (cellGap / 2)
     )
@@ -131,7 +126,6 @@ try:
                 if gridIndex + 1 <= daysPassed:
                     # This day has already passed
                     # Fill rectangle
-                    # TODO: can we have a more "don't repeat the last one" random?
                     img = random.choice(possibleImg)
                     crossedOffCell(cellX, cellY, img)
                 # else:
