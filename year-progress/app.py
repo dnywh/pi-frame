@@ -1,26 +1,30 @@
 # General imports
 import sys
 import os
-
-# import os.path # TODO : needed?
 import logging
 import math
 from datetime import datetime
 from PIL import Image, ImageDraw
 import random  # For randomly choosing an image
 
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+# Set PIL to not log so much
+logging.getLogger("PIL").setLevel(logging.INFO)
 
+# Prepare directories so they can be reached from anywhere
+appDir = os.path.dirname(os.path.realpath(__file__))
+assetsDir = os.path.join(appDir, "assets")
 # Get required items from other root-level directories
-libDir = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "lib"
-)
-
+parentDir = os.path.dirname(appDir)
+libDir = os.path.join(parentDir, "lib")
 if os.path.exists(libDir):
     sys.path.append(libDir)
-
+# Change the below to whatever Waveshare model you have, or add a different display's driver to /lib
 from waveshare_epd import (
     epd7in5_V2,
-)  # Change to whatever Waveshare model you have, or add a different display's driver to /lib
+)
+
 
 # Design stuff
 margin = 36
@@ -28,11 +32,6 @@ desiredHeight = 360 - 36
 cellGap = 9
 bufferX = 4
 bufferY = 14
-
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
-# Set PIL to not log so much
-logging.getLogger("PIL").setLevel(logging.INFO)
 
 
 def crossedOffCell(x, y, img):
@@ -55,8 +54,9 @@ try:
     lastDayOfYear = datetime(thisYear, 12, 31)
     currentDayOfYear = datetime.now().timetuple().tm_yday
     totalDaysThisYear = (lastDayOfYear - firstDayOfYear).days + 1
-    currentDayOfYear = 90  # TODO remove, debugging
-    logging.info(f"Crossing off {currentDayOfYear} days of {totalDaysThisYear}")
+    currentDayOfYear = 281  # TODO remove, debugging
+    daysPassed = currentDayOfYear - 1
+    logging.info(f"Crossing off {daysPassed} days of {totalDaysThisYear}")
 
     # Create a square grid based on year information
     cols = math.ceil(math.sqrt(totalDaysThisYear))
@@ -68,18 +68,17 @@ try:
     imageExcess = int(cellGap / 2)
 
     # Prepare images
-    assetDir = "assets"
     amountOfAssets = len(
         [
             name
-            for name in os.listdir(assetDir)
-            if os.path.isfile(os.path.join(assetDir, name))
+            for name in os.listdir(assetsDir)
+            if os.path.isfile(os.path.join(assetsDir, name))
         ]
     )
 
     possibleImg = []
     for i in range(amountOfAssets):
-        img = Image.open(f"assets/scratch-{i + 1:02d}.png").resize(
+        img = Image.open(os.path.join(assetsDir, f"scratch-{i + 1:02d}.png")).resize(
             (cellSize + imageExcess, cellSize + imageExcess)
         )
         possibleImg.append(img)
@@ -91,7 +90,7 @@ try:
 
     canvas = Image.new(
         "1", (epd.width, epd.height), "white"
-    )  # TODO replicate clear color naming elsewhere too
+    )  # TODO replicate clear color naming in other apps, too (instead of 0, 1, 255)
     draw = ImageDraw.Draw(canvas)
 
     # Center grid
@@ -129,7 +128,7 @@ try:
                     width=1,
                 )
                 # Check if cell is day in past
-                if gridIndex + 1 < currentDayOfYear:
+                if gridIndex + 1 <= daysPassed:
                     # This day has already passed
                     # Fill rectangle
                     # TODO: can we have a more "don't repeat the last one" random?

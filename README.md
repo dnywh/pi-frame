@@ -20,7 +20,7 @@ These apps are the reason Pi Frame exists: I wanted an easy way to switch betwee
 | Name                                             | Description                                                                                                                                                                                  |
 | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Where ISS?](https://github.com/dnywh/where-iss) | Track what part of Earth the International Space Station is passing over                                                                                                                     |
-| [Surf Dot](https://github.com/dnywh/surf-dot)    | Show the day's surf report in the style of Kōhei Sugiura                                                                                                                                     |
+| [Surf Grid](https://github.com/dnywh/surf-grid)  | Show the day's surf report in the style of Kōhei Sugiura                                                                                                                                     |
 | [Art Box](TODO)                                  | Shows a random image from the Art Institute of Chicago's [collection](https://www.artic.edu/collection?classification_ids=woodcut&material_ids=ink&artwork_type_id=Print&is_public_domain=1) |
 
 ### Ideas

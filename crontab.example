@@ -1,26 +1,22 @@
-# Run Date Stamp on startup
-# Log the result to a shared cronlog file
+# Run Date Stamp if rebooted
 @reboot /home/pi/date-stamp/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# Run Surf Grid once at 5:30am
-30 05 * * * /home/pi/surf-grid/launcher.sh >/home/pi/logs/cronlog.log 2>&1
+# Run Year Progress once at 5:30am
+30 05 * * * /home/pi/year-progress/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# Run Where ISS every thirtieth minute between 9am and 8pm
-*/30 08-20 * * * /home/pi/where-iss/launcher.sh >/home/pi/logs/cronlog.log 2>&1
-
-# Run Date Stamp once at 9pm
-00 21 * * * /home/pi/date-stamp/launcher.sh >/home/pi/logs/cronlog.log 2>&1
+# Run Date Stamp once at 1pm
+00 13 * * * /home/pi/date-stamp/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
 # Run Eraser once at 10:30pm
 30 22 * * * /home/pi/eraser/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
 # Templates
-# Every hour between certain hours would start like this:
+# At minute 0 past every hour from 12am through 10am:
 # 0 00-10 * * * /home/pi/app-name/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# Every thirtieth minute between certain hours would start like this:
+# Every 30th minute past every hour from 8pm through 11pm:
 # */30 20-23 * * * /home/pi/app-name/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 
-# Every thirtieth minute between certain hours that cross over midnight:
+# Every 30th minute past every hour from 8pm through 8am:
 # */30 20-23 * * * /home/pi/app-name/launcher.sh >/home/pi/logs/cronlog.log 2>&1
 # */30 00-08 * * * /home/pi/app-name/launcher.sh >/home/pi/logs/cronlog.log 2>&1
