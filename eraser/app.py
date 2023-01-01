@@ -26,7 +26,7 @@ try:
     epd.Clear()
 
     epd.sleep()
-    logging.info("Going to sleep.")
+    logging.info("Clean as a whistle. Enjoy")
 
     # Exit application
     exit()
