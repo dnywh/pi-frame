@@ -20,18 +20,20 @@ parentDir = os.path.dirname(appDir)
 libDir = os.path.join(parentDir, "lib")
 if os.path.exists(libDir):
     sys.path.append(libDir)
-# Change the below to whatever Waveshare model you have, or add a different display's driver to /lib
-from waveshare_epd import (
-    epd7in5_V2,
-)
+
+# Change the below import to match your display's driver
+from waveshare_epd import epd5in83_V2 as display
+
+# Adjust your optical offsets from one place
+import layout
 
 
 # Design parameters
 margin = 24
-desiredHeight = 360 - margin
+containerSize = layout.size - margin
+offsetX = layout.offsetX
+offsetY = layout.offsetY
 cellGap = 6
-bufferX = 4
-bufferY = 14
 
 
 def crossedOffCell(x, y, img):
@@ -61,7 +63,7 @@ try:
     rows = cols
     # Calculate how many rows are excess as a result of the square shape
     excessRows = math.trunc(((cols * rows - totalDaysThisYear) / rows))
-    maxCellSize = int(desiredHeight / cols)
+    maxCellSize = int(containerSize / cols)
     cellSize = maxCellSize - cellGap
     imageExcess = int(cellSize * 0.25)
 
@@ -82,36 +84,36 @@ try:
         possibleImg.append(img)
 
     # Start rendering
-    epd = epd7in5_V2.EPD()
+    epd = display.EPD()
     epd.init()
     epd.Clear()
 
     canvas = Image.new("1", (epd.width, epd.height), "white")
     draw = ImageDraw.Draw(canvas)
 
-    # Center grid
-    offsetX = (
-        bufferX + int((epd.width - (cols * (cellSize + cellGap))) / 2) + (cellGap / 2)
+    # Calculate top-left starting position
+    startX = (
+        offsetX + int((epd.width - (cols * (cellSize + cellGap))) / 2) + (cellGap / 2)
     )
-    offsetY = (
-        bufferY
+    startY = (
+        offsetY
         + int((epd.height - (rows * (cellSize + cellGap))) / 2)
         + (cellGap / 2)
         + ((excessRows * cellSize) / 2)
         + (cellGap / 2)
     )
 
-    # Prepare variables
+    # Prepare starting positions
     gridIndex = 0
-    valueX = 0
-    valueY = 0
+    itemX = 0
+    itemY = 0
 
     # Traverse through rows top to bottom
     for kk in range(rows):
         # Traverse through cols left to right
         for jj in range(cols):
-            cellX = valueX + offsetX
-            cellY = valueY + offsetY
+            cellX = startX + itemX
+            cellY = startY + itemY
             # Check if cell is within days of day
             if gridIndex + 1 <= totalDaysThisYear:
                 # This cell is within the amount of days of the year (e.g. <=366 for a leap year)
@@ -131,13 +133,13 @@ try:
                 # else:
                 # This day hasn't passed yet
             # Move to the next column in the row
-            valueX += cellSize + cellGap
+            itemX += cellSize + cellGap
             # Store what gridIndex we're up to
             gridIndex += 1
         # Go to next row down
-        valueY += cellSize + cellGap
+        itemY += cellSize + cellGap
         # Go to first column on left
-        valueX = 0
+        itemX = 0
 
     # Render all of the above to the display
     epd.display(epd.getbuffer(canvas))
@@ -154,5 +156,5 @@ except IOError as e:
 
 except KeyboardInterrupt:
     logging.info("Exited.")
-    epd7in5_V2.epdconfig.module_exit()
+    display.epdconfig.module_exit()
     exit()

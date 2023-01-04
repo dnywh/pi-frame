@@ -11,15 +11,14 @@ libDir = os.path.join(
 if os.path.exists(libDir):
     sys.path.append(libDir)
 
-from waveshare_epd import (
-    epd7in5_V2,
-)  # Change to whatever Waveshare model you have, or add a different display's driver to /lib
+# Change the below import to match your display's driver
+from waveshare_epd import epd5in83_V2 as display
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
 try:
-    epd = epd7in5_V2.EPD()
+    epd = display.EPD()
 
     logging.info("Wiping clean...")
     epd.init()
@@ -36,5 +35,5 @@ except IOError as e:
 
 except KeyboardInterrupt:
     logging.info("Exited.")
-    epd7in5_V2.epdconfig.module_exit()
+    display.epdconfig.module_exit()
     exit()

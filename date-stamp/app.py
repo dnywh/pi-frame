@@ -21,18 +21,20 @@ parentDir = os.path.dirname(appDir)
 libDir = os.path.join(parentDir, "lib")
 if os.path.exists(libDir):
     sys.path.append(libDir)
-# Change the below to whatever Waveshare model you have, or add a different display's driver to /lib
-from waveshare_epd import (
-    epd7in5_V2,
-)
+
+# Change the below import to match your display's driver
+from waveshare_epd import epd5in83_V2 as display
+
+# Adjust your optical offsets from one place
+import layout
 
 
 # Set design basics
-canvasSize = 360
-fontSize = int(canvasSize / 2)
+containerSize = layout.size
+fontSize = int(containerSize / 2)
 angle = 9
-bufferX = -22
-bufferY = -16
+offsetX = layout.offsetX - 22  # Offset again for text legibility
+offsetY = layout.offsetY - 16  # Offset again for text legibility
 
 
 try:
@@ -48,31 +50,31 @@ try:
     jetBrainsMono = ImageFont.truetype(fontFilePath, fontSize)
 
     # Start rendering
-    epd = epd7in5_V2.EPD()
+    epd = display.EPD()
     epd.init()
     epd.Clear()
 
     canvas = Image.new("1", (epd.width, epd.height), "black")
     draw = ImageDraw.Draw(canvas)
 
-    # Center grid
-    offsetX = int((epd.width - canvasSize) / 2) + bufferX
-    offsetY = int((epd.height - canvasSize) / 2) + bufferY
+    # Calculate top-left starting position
+    startX = offsetX + int((epd.width - containerSize) / 2)
+    startY = offsetY + int((epd.height - containerSize) / 2)
 
     draw.text(
-        (offsetX, offsetY),
+        (startX, startY),
         f"{day}{month}",
         font=jetBrainsMono,
         fill="white",
     )
 
     draw.text(
-        (offsetX - (fontSize * 0.15), offsetY + (fontSize * 0.95)),
+        (startX - (fontSize * 0.15), startY + (fontSize * 0.95)),
         year,
         font=jetBrainsMono,
         fill="white",
     )
-    canvas = canvas.rotate(angle)
+    canvas = canvas.rotate(angle, resample=Image.NEAREST)
 
     # Render all of the above to the display
     epd.display(epd.getbuffer(canvas))
@@ -90,5 +92,5 @@ except IOError as e:
 # Exit plan
 except KeyboardInterrupt:
     logging.info("Exited.")
-    epd7in5_V2.epdconfig.module_exit()
+    display.epdconfig.module_exit()
     exit()
