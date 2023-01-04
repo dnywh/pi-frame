@@ -3,12 +3,12 @@ import sys
 import os
 import logging
 from datetime import datetime
+
 from PIL import (
     Image,
     ImageDraw,
     ImageFont,
 )
-
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -28,8 +28,7 @@ from waveshare_epd import epd5in83_V2 as display
 # Adjust your optical offsets from one place
 import layout
 
-
-# Set design basics
+# Settings
 containerSize = layout.size
 fontSize = int(containerSize / 2)
 angle = 9

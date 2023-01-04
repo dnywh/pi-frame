@@ -4,8 +4,9 @@ import os
 import logging
 import math
 from datetime import datetime
-from PIL import Image, ImageDraw
 import random  # For randomly choosing an image
+
+from PIL import Image, ImageDraw
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -29,7 +30,7 @@ import layout
 
 
 # Design parameters
-margin = 24
+margin = 28
 containerSize = layout.size - margin
 offsetX = layout.offsetX
 offsetY = layout.offsetY
