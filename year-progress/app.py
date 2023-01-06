@@ -31,7 +31,8 @@ import layout
 
 # Design parameters
 margin = 28
-containerSize = layout.size - margin
+maskWidth = layout.maskWidth - margin
+maskHeight = layout.maskHeight - margin
 offsetX = layout.offsetX
 offsetY = layout.offsetY
 cellGap = 6
@@ -64,7 +65,7 @@ try:
     rows = cols
     # Calculate how many rows are excess as a result of the square shape
     excessRows = math.trunc(((cols * rows - totalDaysThisYear) / rows))
-    maxCellSize = int(containerSize / cols)
+    maxCellSize = int(maskWidth / cols)
     cellSize = maxCellSize - cellGap
     imageExcess = int(cellSize * 0.25)
 

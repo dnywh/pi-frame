@@ -29,12 +29,12 @@ from waveshare_epd import epd5in83_V2 as display
 import layout
 
 # Settings
-containerSize = layout.size
-fontSize = int(containerSize / 2)
+maskWidth = layout.maskWidth
+maskHeight = layout.maskHeight
+fontSize = int(maskWidth / 2)
 angle = 9
-offsetX = layout.offsetX - 22  # Offset again for text legibility
-offsetY = layout.offsetY - 16  # Offset again for text legibility
-
+offsetX = layout.offsetX - 36  # Offset again for text legibility
+offsetY = -24  # Offset again for text legibility
 
 try:
     # Local time
@@ -57,8 +57,8 @@ try:
     draw = ImageDraw.Draw(canvas)
 
     # Calculate top-left starting position
-    startX = offsetX + int((epd.width - containerSize) / 2)
-    startY = offsetY + int((epd.height - containerSize) / 2)
+    startX = offsetX + int((epd.width - maskWidth) / 2)
+    startY = offsetY + int((epd.height - maskHeight) / 2)
 
     draw.text(
         (startX, startY),
