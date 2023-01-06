@@ -1,6 +1,6 @@
 # Pi Frame
 
-![Pi Frame Sequence.gif](https://res.cloudinary.com/dannywhite/image/upload/v1672984819/github/pi-frame-sequence.gif.gif)
+![Pi Frame Sequence.gif](https://res.cloudinary.com/dannywhite/image/upload/v1672984819/github/pi-frame-sequence.gif)
 
 Pi Frame is a lightweight starter kit for printing timely data or art (or both) to an e-ink/e-Paper display. It’s like your own newspaper, except that it updates itself however often you like and with whatever content you find interesting.
 
